@@ -25,6 +25,39 @@ main{max-width:1200px;margin:auto;padding:45px 20px 80px}
 .notice{margin-top:25px;padding:16px 18px;border-left:4px solid var(--accent);background:#10243a;border-radius:8px;color:#c9d8e8}
 footer{text-align:center;padding:35px 20px;color:#8398ad;border-top:1px solid #20344c}
 @media(max-width:600px){header{padding-top:50px}.download-card{align-items:flex-start;flex-direction:column}.download-card .button{width:100%;text-align:center}}
+
+/* Colorful, smooth, hard-to-catch exam icon */
+#runaway-exam {
+  position: fixed; left: 50vw; top: 50vh; z-index: 9999;
+  width: 132px; min-height: 112px; padding: 12px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  border: 2px solid rgba(255,255,255,.96); border-radius: 22px;
+  background: linear-gradient(135deg,#ff4f9a 0%,#ff8b43 35%,#ffe45e 65%,#45e3d0 100%);
+  color: #17213b; box-shadow: 0 9px 0 rgba(28,34,76,.18),0 16px 34px #0006,inset 0 2px 0 #ffffffb8;
+  font: 900 12px/1.2 Inter,system-ui,Arial,sans-serif; text-align: center;
+  cursor: default; user-select: none; -webkit-user-select: none; touch-action: none;
+  will-change: left,top,transform; transform: translate3d(-50%,-50%,0) rotate(-3deg);
+  pointer-events: none;
+}
+#runaway-exam::before {
+  content: "EXAM COPY"; position: absolute; top: -11px; right: -9px;
+  padding: 5px 8px; border: 2px solid white; border-radius: 999px;
+  background: #7357ff; color: white; font-size: 9px; letter-spacing: .5px;
+  box-shadow: 0 3px 8px #0003; transform: rotate(7deg);
+}
+#runaway-exam::after {
+  content: "✦"; position: absolute; left: -9px; bottom: 8px; color: white;
+  font-size: 24px; text-shadow: 0 2px 5px #6b3b9a;
+}
+#runaway-exam .exam-paper {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px;
+  background: linear-gradient(145deg,#fff,#e9f5ff); border: 2px solid #fff;
+  box-shadow: 0 4px 0 #d2d9ff,0 7px 12px #6e3c6b45; font-size: 32px; line-height: 1;
+  animation: exam-bob 1.8s ease-in-out infinite;
+}
+@keyframes exam-bob { 0%,100%{ transform: translateY(0) rotate(-4deg) } 50%{ transform: translateY(-4px) rotate(4deg) } }
+@media (prefers-reduced-motion: reduce) { #runaway-exam .exam-paper { animation: none; } }
+
 </style>
 </head>
 <body>
@@ -127,5 +160,126 @@ footer{text-align:center;padding:35px 20px;color:#8398ad;border-top:1px solid #2
 </section>
 </main>
 <footer>Physik & Mathematik · Unterrichtsmaterialien - Dr. rer. nat. Hazem A. Karim MSc., BSc.</footer>
+
+<!-- A playful exam icon that always escapes the pointer -->
+<div id="runaway-exam" aria-label="Eine freche Prüfungskopie, die vor dem Mauszeiger wegläuft" role="img">
+  <span class="exam-paper" aria-hidden="true">📄</span>
+  <span>EXAM COPY</span>
+</div>
+<script>
+(() => {
+  const exam = document.getElementById('runaway-exam');
+  if (!exam) return;
+
+  const margin = 18;
+  const safeDistance = 150;
+  const triggerDistance = 235;
+  let x = Math.max(margin + exam.offsetWidth / 2, window.innerWidth * 0.72);
+  let y = Math.max(margin + exam.offsetHeight / 2, window.innerHeight * 0.68);
+  let targetX = x;
+  let targetY = y;
+  let pointerX = window.innerWidth / 2;
+  let pointerY = window.innerHeight / 2;
+  let pointerKnown = false;
+  let lastEscape = 0;
+  let tilt = -3;
+
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  function limits() {
+    return {
+      minX: margin + exam.offsetWidth / 2,
+      maxX: Math.max(margin + exam.offsetWidth / 2, window.innerWidth - margin - exam.offsetWidth / 2),
+      minY: margin + exam.offsetHeight / 2,
+      maxY: Math.max(margin + exam.offsetHeight / 2, window.innerHeight - margin - exam.offsetHeight / 2)
+    };
+  }
+  function keepInView(px, py) {
+    const b = limits();
+    return { x: clamp(px, b.minX, b.maxX), y: clamp(py, b.minY, b.maxY) };
+  }
+  function escapePointer(force = false) {
+    if (!pointerKnown) return;
+    const now = performance.now();
+    if (!force && now - lastEscape < 90) return;
+
+    const dx = x - pointerX;
+    const dy = y - pointerY;
+    const len = Math.hypot(dx, dy) || 1;
+    const baseAngle = Math.atan2(dy, dx);
+    const currentDistance = Math.hypot(dx, dy);
+    let best = null;
+    let bestScore = Infinity;
+    const b = limits();
+
+    // Pick a nearby safe point around the pointer, preferring points inside the viewport.
+    for (let i = 0; i < 18; i++) {
+      const angle = baseAngle + (Math.random() - 0.5) * 2.4;
+      const radius = safeDistance + Math.random() * 48;
+      const candidate = keepInView(pointerX + Math.cos(angle) * radius, pointerY + Math.sin(angle) * radius);
+      const distanceFromPointer = Math.hypot(candidate.x - pointerX, candidate.y - pointerY);
+      if (distanceFromPointer < 112) continue;
+      const travel = Math.hypot(candidate.x - x, candidate.y - y);
+      const score = travel + Math.abs(distanceFromPointer - 165) * 0.8;
+      if (score < bestScore) { bestScore = score; best = candidate; }
+    }
+
+    // Fallback for tiny viewports or awkward edge positions.
+    if (!best) {
+      const angle = baseAngle + (Math.random() < 0.5 ? 1 : -1) * 1.25;
+      best = keepInView(pointerX + Math.cos(angle) * 145, pointerY + Math.sin(angle) * 145);
+    }
+    targetX = best.x;
+    targetY = best.y;
+    lastEscape = now;
+    tilt = (Math.random() * 18) - 9;
+  }
+
+  function onPointerMove(event) {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    pointerKnown = true;
+    const rect = exam.getBoundingClientRect();
+    const nearX = clamp(pointerX, rect.left, rect.right);
+    const nearY = clamp(pointerY, rect.top, rect.bottom);
+    const distance = Math.hypot(pointerX - nearX, pointerY - nearY);
+    if (distance < triggerDistance) escapePointer(distance < 45);
+  }
+
+  document.addEventListener('pointermove', onPointerMove, { passive: true });
+  // The icon ignores clicks by design; pointer events still trigger escape via document movement.
+  document.addEventListener('pointerdown', (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    pointerKnown = true;
+    escapePointer(true);
+  }, { passive: true });
+
+  function animate() {
+    // Frame-rate-independent easing: fast enough to evade, smooth enough to look playful.
+    x += (targetX - x) * 0.19;
+    y += (targetY - y) * 0.19;
+    if (pointerKnown && Math.hypot(x - pointerX, y - pointerY) < 105) escapePointer(true);
+    exam.style.left = `${x}px`;
+    exam.style.top = `${y}px`;
+    exam.style.transform = `translate3d(-50%,-50%,0) rotate(${tilt}deg)`;
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    const pos = keepInView(x, y);
+    x = pos.x; y = pos.y;
+    const target = keepInView(targetX, targetY);
+    targetX = target.x; targetY = target.y;
+  });
+
+  const initial = keepInView(x, y);
+  x = targetX = initial.x;
+  y = targetY = initial.y;
+  exam.style.left = `${x}px`;
+  exam.style.top = `${y}px`;
+  requestAnimationFrame(animate);
+})();
+</script>
+
 </body>
 </html>
