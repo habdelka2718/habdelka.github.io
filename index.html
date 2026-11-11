@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physik & Mathematik – Unterrichtsmaterialien</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1b2d;--panel2:#12243a;--text:#eef6ff;--muted:#a9bbcf;--accent:#49b8ff;--accent2:#8d7cff}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(135deg,#06101d,#0a1830 55%,#11142e);color:var(--text)}
+header{padding:70px 7% 55px;text-align:center;background:radial-gradient(circle at 50% 0%,#193a61 0,#0b1930 42%,transparent 70%)}
+.badge{display:inline-block;padding:8px 14px;border:1px solid #2d577e;border-radius:999px;color:#9edcff;font-size:.85rem}
+h1{font-size:clamp(2.5rem,7vw,5.5rem);margin:18px 0 10px;line-height:.95} h1 span{color:var(--accent)}
+header p{max-width:720px;margin:20px auto;color:var(--muted);font-size:1.12rem}
+nav{position:sticky;top:0;z-index:10;background:#07111fe8;backdrop-filter:blur(12px);border-bottom:1px solid #20344c}
+nav .inner{max-width:1200px;margin:auto;display:flex;gap:10px;justify-content:center;padding:12px;flex-wrap:wrap}
+nav a{color:var(--text);text-decoration:none;padding:9px 15px;border-radius:10px} nav a:hover{background:#17304c}
+main{max-width:1200px;margin:auto;padding:45px 20px 80px}
+.section-title{margin:0 0 8px;font-size:2rem}.intro{color:var(--muted);margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:25px}
+.card{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid #24415f;border-radius:18px;padding:24px;box-shadow:0 12px 35px #0004}
+.icon{font-size:2rem}.card h3{margin:12px 0 7px}.card p{color:var(--muted);line-height:1.55}
+.button{display:inline-block;margin-top:10px;padding:11px 15px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;text-decoration:none;font-weight:700}
+.downloads{margin-top:55px}.download-card{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.download-card small{color:#91a7bd}.download-card .button{white-space:nowrap}
+.notice{margin-top:25px;padding:16px 18px;border-left:4px solid var(--accent);background:#10243a;border-radius:8px;color:#c9d8e8}
+footer{text-align:center;padding:35px 20px;color:#8398ad;border-top:1px solid #20344c}
+@media(max-width:600px){header{padding-top:50px}.download-card{align-items:flex-start;flex-direction:column}.download-card .button{width:100%;text-align:center}}
+
+/* Colorful, smooth, hard-to-catch exam icon */
+#runaway-exam {
+  position: fixed; left: 50vw; top: 50vh; z-index: 9999;
+  width: 132px; min-height: 112px; padding: 12px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  border: 2px solid rgba(255,255,255,.96); border-radius: 22px;
+  background: linear-gradient(135deg,#ff4f9a 0%,#ff8b43 35%,#ffe45e 65%,#45e3d0 100%);
+  color: #17213b; box-shadow: 0 9px 0 rgba(28,34,76,.18),0 16px 34px #0006,inset 0 2px 0 #ffffffb8;
+  font: 900 12px/1.2 Inter,system-ui,Arial,sans-serif; text-align: center;
+  cursor: default; user-select: none; -webkit-user-select: none; touch-action: none;
+  will-change: left,top,transform; transform: translate3d(-50%,-50%,0) rotate(-3deg);
+  pointer-events: none;
+}
+#runaway-exam::before {
+  content: "EXAM COPY"; position: absolute; top: -11px; right: -9px;
+  padding: 5px 8px; border: 2px solid white; border-radius: 999px;
+  background: #7357ff; color: white; font-size: 9px; letter-spacing: .5px;
+  box-shadow: 0 3px 8px #0003; transform: rotate(7deg);
+}
+#runaway-exam::after {
+  content: "✦"; position: absolute; left: -9px; bottom: 8px; color: white;
+  font-size: 24px; text-shadow: 0 2px 5px #6b3b9a;
+}
+#runaway-exam .exam-paper {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px;
+  background: linear-gradient(145deg,#fff,#e9f5ff); border: 2px solid #fff;
+  box-shadow: 0 4px 0 #d2d9ff,0 7px 12px #6e3c6b45; font-size: 32px; line-height: 1;
+  animation: exam-bob 1.8s ease-in-out infinite;
+}
+@keyframes exam-bob { 0%,100%{ transform: translateY(0) rotate(-4deg) } 50%{ transform: translateY(-4px) rotate(4deg) } }
+@media (prefers-reduced-motion: reduce) { #runaway-exam .exam-paper { animation: none; } }
+
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">DIGITALE UNTERRICHTSMATERIALIEN</span>
+  <h1>Physik <span>&</span> Mathematik</h1>
+  <p>Präsentationen, Arbeitsblätter, Experimente und Lernmaterialien – übersichtlich für Schülerinnen und Schüler.</p>
+</header>
+<nav><div class="inner">
+  <a href="#physik">⚛️ Physik</a><a href="#mathematik">📐 Mathematik</a><a href="#kurrikulum">🌳 Kurrikulum </a><a href="#downloads">📥 Downloads</a>
+</div></nav>
+
+<main>
+<section id="physik">
+  <h2 class="section-title">⚛️ Physik</h2><p class="intro">Materialien zum Verstehen, Experimentieren und Anwenden.</p>
+  <div class="grid">
+    <div class="card"><div class="icon">🚀</div><h3>Mechanik</h3><p>Bewegung, Kräfte, Energie und Impuls.</p></div>
+    <div class="card"><div class="icon">⚡</div><h3>Elektrizität</h3><p>Strom, Spannung, Widerstand und elektrische Felder.</p></div>
+    <div class="card"><div class="icon">🧲</div><h3>Elektromagnetismus</h3><p>Magnetfelder, Induktion und elektromagnetische Anwendungen.</p></div>
+    <div class="card"><div class="icon">🔭</div><h3>Optik & moderne Physik</h3><p>Licht, Wellen, Quanten und weitere Themen.</p></div>
+  </div>
+</section>
+
+<section id="mathematik" style="margin-top:55px">
+  <h2 class="section-title">📐 Mathematik</h2><p class="intro">Erklärungen, Beispiele und Aufgaben für den Unterricht.</p>
+  <div class="grid">
+    <div class="card"><div class="icon">📈</div><h3>Funktionen</h3><p>Lineare, quadratische und weitere Funktionen.</p></div>
+    <div class="card"><div class="icon">∂</div><h3>Differentiation</h3><p>Ableitungen, Produktregel und Anwendungen.</p></div>
+    <div class="card"><div class="icon">🎲</div><h3>Wahrscheinlichkeit</h3><p>Permutation, Variation, Kombination und Statistik.</p></div>
+    <div class="card"><div class="icon">🎓</div><h3>Abitur</h3><p>Prüfungsvorbereitung und typische Aufgaben.</p></div>
+  </div>
+</section>
+
+<section id="kurrikulum" style="margin-top:55px">
+  <h2 class="section-title">🌳 Kurrikulum</h2><p class="intro">W-D Schule Baden-Württemberg</p>
+  <div class="grid">
+    <div class="card"><div class="icon">📝</div><h3>Mathe 08</h3><p>Arithmetik - Geometrie - Symmetrie</p></div>
+    <div class="card"><div class="icon">🧭</div><h3>Mathe 09</h3><p>Algebra - Kombinatorik - Geometrie</p></div>
+    <div class="card"><div class="icon">📖</div><h3>Physik 09</h3><p>Wärmelehre - Elektrizitätslehre - Akustik</p></div>
+    <div class="card"><div class="icon">📋</div><h3>Physik 10</h3><p>Statik - Kinematik - Dynamik</p></div>
+    <div class="card"><div class="icon">📚</div><h3>Physik 11</h3><p>Elektrizität - Atomphysik</p></div>
+	<div class="card"><div class="icon">🧩</div><h3>Physik 12</h3><p>Optik</p></div>
+  </div>
+</section>
+
+<section id="downloads" class="downloads">
+  <h2 class="section-title">📥 Downloads</h2>
+
+<!-- Neu DOK sind hier -->
+<div class="grid">
+		<div class="card download-card">
+			<div><h3>Lab Report Muster</h3></div>
+			<a class="button" href="Lab_muster.docx" download>Download</a>
+		</div>
+</div>
+	
+<div class="grid">
+		<div class="card download-card">
+			<div><h3> <p style="color: red">Klasse 12: </p> Optik_Lernskript</h3></div>
+			<a class="button" href="Optik_Lernskript.pdf" download>Download</a>
+		</div>
+</div>
+
+  <div class="grid">
+		<div class="card download-card">
+			<div><h3><p style="color: blue">Klasse 11: </p> Elektrizität_Lernskript</h3></div>
+			<a class="button" href="Elektrizitaet_Lernskript.pdf" download>Download</a>
+		</div>
+	  
+		<div class="card download-card">
+			<div><h3><p style="color: blue">Klasse 11: </p> AtomPhysik_Lernskript</h3></div>
+			<a class="button" href="Atomphysik_Lernskript.pdf" download>Download</a>
+		</div>
+</div>
+	
+  <div class="grid">
+		<div class="card download-card">
+			<div><h3> <p style="color: skyblue">Klasse 09: </p> Wahrscheinlichkeit</h3></div>
+			<a class="button" href="Wahrscheinlichkeit.pdf" download>Download</a>
+		</div>
+		<div class="card download-card">
+			<div><h3> <p style="color: skyblue">Klasse 09: </p> Algebra</h3></div>
+			<a class="button" href="Algebra.pdf" download>Download</a>
+		</div>
+		<div class="card download-card">
+			<div><h3> <p style="color: skyblue">Klasse 09: </p> Klausur Vorbereitung</h3></div>
+			<a class="button" href="KlausurVB.pdf" download>Download</a>
+		</div>
+  </div>
+
+	 <div class="grid">
+		<div class="card download-card">
+			<div><h3><p style="color: green">Klasse 08: </p> Mathematik für Anfänger</h3></div>
+			<a class="button" href="Mathe_Klasse08.pdf" download>Download</a>
+		</div>
+		
+  </div>
+  
+     <a href='https://www.acadoo.de/leistungen/ghostwriter-doktorarbeit/'>Dissertation schreiben</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=12f5c300aeab3b867c0d0a4f1e750763fab25705'></script>
+<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1665947/t/13"></script>
+  
+  
+</section>
+</main>
+<footer>Physik & Mathematik · Unterrichtsmaterialien - Dr. rer. nat. Hazem A. Karim MSc., BSc.</footer>
+
+<!-- A playful exam icon that always escapes the pointer -->
+<div id="runaway-exam" aria-label="Eine freche Prüfungskopie, die vor dem Mauszeiger wegläuft" role="img">
+  <span class="exam-paper" aria-hidden="true">📄</span>
+  <span>EXAM COPY</span>
+</div>
+<script>
+(() => {
+  const exam = document.getElementById('runaway-exam');
+  if (!exam) return;
+
+  const margin = 18;
+  const safeDistance = 150;
+  const triggerDistance = 235;
+  let x = Math.max(margin + exam.offsetWidth / 2, window.innerWidth * 0.72);
+  let y = Math.max(margin + exam.offsetHeight / 2, window.innerHeight * 0.68);
+  let targetX = x;
+  let targetY = y;
+  let pointerX = window.innerWidth / 2;
+  let pointerY = window.innerHeight / 2;
+  let pointerKnown = false;
+  let lastEscape = 0;
+  let tilt = -3;
+
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  function limits() {
+    return {
+      minX: margin + exam.offsetWidth / 2,
+      maxX: Math.max(margin + exam.offsetWidth / 2, window.innerWidth - margin - exam.offsetWidth / 2),
+      minY: margin + exam.offsetHeight / 2,
+      maxY: Math.max(margin + exam.offsetHeight / 2, window.innerHeight - margin - exam.offsetHeight / 2)
+    };
+  }
+  function keepInView(px, py) {
+    const b = limits();
+    return { x: clamp(px, b.minX, b.maxX), y: clamp(py, b.minY, b.maxY) };
+  }
+  function escapePointer(force = false) {
+    if (!pointerKnown) return;
+    const now = performance.now();
+    if (!force && now - lastEscape < 90) return;
+
+    const dx = x - pointerX;
+    const dy = y - pointerY;
+    const len = Math.hypot(dx, dy) || 1;
+    const baseAngle = Math.atan2(dy, dx);
+    const currentDistance = Math.hypot(dx, dy);
+    let best = null;
+    let bestScore = Infinity;
+    const b = limits();
+
+    // Pick a nearby safe point around the pointer, preferring points inside the viewport.
+    for (let i = 0; i < 18; i++) {
+      const angle = baseAngle + (Math.random() - 0.5) * 2.4;
+      const radius = safeDistance + Math.random() * 48;
+      const candidate = keepInView(pointerX + Math.cos(angle) * radius, pointerY + Math.sin(angle) * radius);
+      const distanceFromPointer = Math.hypot(candidate.x - pointerX, candidate.y - pointerY);
+      if (distanceFromPointer < 112) continue;
+      const travel = Math.hypot(candidate.x - x, candidate.y - y);
+      const score = travel + Math.abs(distanceFromPointer - 165) * 0.8;
+      if (score < bestScore) { bestScore = score; best = candidate; }
+    }
+
+    // Fallback for tiny viewports or awkward edge positions.
+    if (!best) {
+      const angle = baseAngle + (Math.random() < 0.5 ? 1 : -1) * 1.25;
+      best = keepInView(pointerX + Math.cos(angle) * 145, pointerY + Math.sin(angle) * 145);
+    }
+    targetX = best.x;
+    targetY = best.y;
+    lastEscape = now;
+    tilt = (Math.random() * 18) - 9;
+  }
+
+  function onPointerMove(event) {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    pointerKnown = true;
+    const rect = exam.getBoundingClientRect();
+    const nearX = clamp(pointerX, rect.left, rect.right);
+    const nearY = clamp(pointerY, rect.top, rect.bottom);
+    const distance = Math.hypot(pointerX - nearX, pointerY - nearY);
+    if (distance < triggerDistance) escapePointer(distance < 45);
+  }
+
+  document.addEventListener('pointermove', onPointerMove, { passive: true });
+  // The icon ignores clicks by design; pointer events still trigger escape via document movement.
+  document.addEventListener('pointerdown', (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    pointerKnown = true;
+    escapePointer(true);
+  }, { passive: true });
+
+  function animate() {
+    // Frame-rate-independent easing: fast enough to evade, smooth enough to look playful.
+    x += (targetX - x) * 0.19;
+    y += (targetY - y) * 0.19;
+    if (pointerKnown && Math.hypot(x - pointerX, y - pointerY) < 105) escapePointer(true);
+    exam.style.left = `${x}px`;
+    exam.style.top = `${y}px`;
+    exam.style.transform = `translate3d(-50%,-50%,0) rotate(${tilt}deg)`;
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    const pos = keepInView(x, y);
+    x = pos.x; y = pos.y;
+    const target = keepInView(targetX, targetY);
+    targetX = target.x; targetY = target.y;
+  });
+
+  const initial = keepInView(x, y);
+  x = targetX = initial.x;
+  y = targetY = initial.y;
+  exam.style.left = `${x}px`;
+  exam.style.top = `${y}px`;
+  requestAnimationFrame(animate);
+})();
+</script>
+
+</body>
+</html>
